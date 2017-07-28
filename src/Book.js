@@ -1,8 +1,19 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI'
 import './App.css'
 
 class Book extends React.Component {
+  handleChange = (book, event) => {
+    const value = event.target.value
+    console.log(value)
+    if(value === 'read') {
+      this.props.onMoveToRead(book)
+    } else if (value === 'wantToRead') {
+      this.props.onMoveToWantToRead(book)
+    } else if (value === 'currentlyReading') {
+      this.props.onMoveToCurrentlyReading(book)
+    }
+  }
+
   render() {
     const { books } = this.props
 
@@ -14,8 +25,8 @@ class Book extends React.Component {
               <div className="book-top">
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                 <div className="book-shelf-changer">
-                  <select>
-                    <option value="none" disabled>Move to...</option>
+                  <select onChange={this.handleChange.bind(this, book)}>
+                    <option value="none" disabled selected>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>
                     <option value="read">Read</option>

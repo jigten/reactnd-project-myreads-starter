@@ -12,11 +12,40 @@ class BookShelf extends React.Component {
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books: books })
-      console.log(books)
     })
   }
 
+  moveToRead = (book) => {
+    const books = this.state.books.slice()
+    const index = this.state.books.findIndex(b => b.id === book.id)
+    books[index].shelf = 'read'
+    this.setState({books: books})
+    BooksAPI.update(book, 'read')
+  }
+
+  moveToCurrentlyReading = (book) => {
+    const books = this.state.books.slice()
+    const index = this.state.books.findIndex(b => b.id === book.id)
+    books[index].shelf = 'currentlyReading'
+    this.setState({books: books})
+    BooksAPI.update(book, 'currentlyReading')
+  }
+
+  moveToWantToRead = (book) => {
+    const books = this.state.books.slice()
+    const index = this.state.books.findIndex(b => b.id === book.id)
+    books[index].shelf = 'wantToRead'
+    this.setState({books: books})
+    BooksAPI.update(book, 'wantToRead')
+  }
+
   render() {
+    const {books} = this.state
+
+    let currentlyReadingBooks = books.filter((book) => book.shelf === "currentlyReading")
+    let wantToReadBooks = books.filter((book) => book.shelf === "wantToRead")
+    let readBooks = books.filter((book) => book.shelf === "read")
+
     return (
       <div>
         <div className="list-books">
@@ -29,26 +58,33 @@ class BookShelf extends React.Component {
                 <h2 className="bookshelf-title">Currently Reading</h2>
                 <div className="bookshelf-books">
                   <Book
-                    books={this.state.books}
+                    books={currentlyReadingBooks}
+                    onMoveToCurrentlyReading={this.moveToCurrentlyReading}
+                    onMoveToRead={this.moveToRead}
+                    onMoveToWantToRead={this.moveToWantToRead}
                   />
                 </div>
               </div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Want to Read</h2>
                 <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    <li>
-                    </li>
-                  </ol>
+                  <Book
+                    books={wantToReadBooks}
+                    onMoveToCurrentlyReading={this.moveToCurrentlyReading}
+                    onMoveToRead={this.moveToRead}
+                    onMoveToWantToRead={this.moveToWantToRead}
+                  />
                 </div>
               </div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Read</h2>
                 <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    <li>
-                    </li>
-                  </ol>
+                  <Book
+                    books={readBooks}
+                    onMoveToCurrentlyReading={this.moveToCurrentlyReading}
+                    onMoveToRead={this.moveToRead}
+                    onMoveToWantToRead={this.moveToWantToRead}
+                  />
                 </div>
               </div>
             </div>
