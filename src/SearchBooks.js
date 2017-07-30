@@ -7,15 +7,20 @@ import Book from './Book'
 class SearchBooks extends React.Component {
   state = {
     query: '',
-    books: []
+    books: [],
+    shelfbooks: []
+  }
+
+  componentDidMount() {
+    this.setState({
+      shelfbooks: this.props.location.state.books
+    })
   }
 
   updateQuery = (query) => {
     this.setState({ query: query.trim() })
     BooksAPI.search(this.state.query, 20).then((books) => {
-      console.log(this.state.query)
       this.setState({books: books})
-      console.log(books)
     })
   }
 
@@ -52,7 +57,15 @@ class SearchBooks extends React.Component {
   }
 
   render() {
-    const { query, books } = this.state
+    const { query, books, shelfbooks } = this.state
+
+    books.map((book) => {
+      shelfbooks.map((b) => {
+        if(book.id === b.id) {
+          book.shelf = b.shelf
+        }
+      })
+    })
 
     return (
       <div className="search-books">

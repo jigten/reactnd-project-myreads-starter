@@ -12,7 +12,6 @@ class BookShelf extends React.Component {
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books: books })
-      console.log(books)
     })
   }
 
@@ -103,7 +102,10 @@ class BookShelf extends React.Component {
           </div>
           <div className="open-search">
             <Link
-              to="/search">
+              to={{
+                pathname:'/search',
+                state: { books: books }
+              }}>
                 Search
               </Link>
           </div>
