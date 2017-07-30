@@ -12,6 +12,7 @@ class BookShelf extends React.Component {
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books: books })
+      console.log(books)
     })
   }
 
@@ -39,6 +40,14 @@ class BookShelf extends React.Component {
     BooksAPI.update(book, 'wantToRead')
   }
 
+  moveToNone = (book) => {
+    const books = this.state.books.slice()
+    const index = this.state.books.findIndex(b => b.id === book.id)
+    books[index].shelf = 'none'
+    this.setState({books: books})
+    BooksAPI.update(book, 'none')
+  }
+
   render() {
     const {books} = this.state
 
@@ -62,6 +71,7 @@ class BookShelf extends React.Component {
                     onMoveToCurrentlyReading={this.moveToCurrentlyReading}
                     onMoveToRead={this.moveToRead}
                     onMoveToWantToRead={this.moveToWantToRead}
+                    onMoveToNone={this.moveToNone}
                   />
                 </div>
               </div>
@@ -73,6 +83,7 @@ class BookShelf extends React.Component {
                     onMoveToCurrentlyReading={this.moveToCurrentlyReading}
                     onMoveToRead={this.moveToRead}
                     onMoveToWantToRead={this.moveToWantToRead}
+                    onMoveToNone={this.moveToNone}
                   />
                 </div>
               </div>
@@ -84,6 +95,7 @@ class BookShelf extends React.Component {
                     onMoveToCurrentlyReading={this.moveToCurrentlyReading}
                     onMoveToRead={this.moveToRead}
                     onMoveToWantToRead={this.moveToWantToRead}
+                    onMoveToNone={this.moveToNone}
                   />
                 </div>
               </div>

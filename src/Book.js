@@ -11,6 +11,8 @@ class Book extends React.Component {
       this.props.onMoveToWantToRead(book)
     } else if (value === 'currentlyReading') {
       this.props.onMoveToCurrentlyReading(book)
+    } else {
+      this.props.onMoveToNone(book)
     }
   }
 
@@ -25,8 +27,8 @@ class Book extends React.Component {
               <div className="book-top">
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                 <div className="book-shelf-changer">
-                  <select onChange={this.handleChange.bind(this, book)}>
-                    <option value="none" disabled selected>Move to...</option>
+                  <select value={book.shelf} onChange={this.handleChange.bind(this, book)}>
+                    <option value="none" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>
                     <option value="read">Read</option>
