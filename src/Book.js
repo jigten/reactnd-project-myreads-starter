@@ -1,7 +1,16 @@
 import React from 'react'
 import './App.css'
+import Proptypes from 'prop-types'
 
 class Book extends React.Component {
+  static propTypes = {
+    books: Proptypes.array.isRequired,
+    onMoveToRead: Proptypes.func.isRequired,
+    onMoveToWantToRead: Proptypes.func.isRequired,
+    onMoveToCurrentlyReading: Proptypes.func.isRequired,
+    onMoveToNone: Proptypes.func.isRequired,
+  }
+
   handleChange = (book, event) => {
     const value = event.target.value
     console.log(value)
